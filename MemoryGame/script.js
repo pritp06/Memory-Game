@@ -1,13 +1,13 @@
 const cards = [
-    'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D',
-    'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'
+    '❤️', '❤️', '💛', '💛', '💚', '💚', '💙', '💙',
+    '💜', '💜', '🧡', '🧡', '🤍', '🤍', '🖤', '🖤'
 ];
 
-let cardElements = [];
 let firstCard = null;
 let secondCard = null;
 let lockBoard = false;
 
+// Shuffle the cards
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -16,6 +16,7 @@ function shuffle(array) {
     return array;
 }
 
+// Create a single card element
 function createCard(cardValue) {
     const card = document.createElement('div');
     card.classList.add('card', 'hidden');
@@ -24,6 +25,7 @@ function createCard(cardValue) {
     return card;
 }
 
+// Flip card logic
 function flipCard() {
     if (lockBoard || this.classList.contains('flipped')) return;
 
@@ -36,12 +38,11 @@ function flipCard() {
         secondCard = this;
         lockBoard = true;
 
-        setTimeout(() => {
-            checkForMatch();
-        }, 1000);
+        setTimeout(checkForMatch, 1000);
     }
 }
 
+// Check for a match
 function checkForMatch() {
     const isMatch = firstCard.dataset.value === secondCard.dataset.value;
 
@@ -60,14 +61,18 @@ function checkForMatch() {
     lockBoard = false;
 }
 
+// Start or Restart the Game
 function startGame() {
-    shuffle(cards);
     const grid = document.getElementById('grid');
-    cards.forEach(cardValue => {
+    grid.innerHTML = ''; // Clear the grid
+    shuffle(cards).forEach(cardValue => {
         const card = createCard(cardValue);
         grid.appendChild(card);
-        cardElements.push(card);
     });
 }
 
+// Restart Button Logic
+document.getElementById('restart').addEventListener('click', startGame);
+
+// Initialize the game
 startGame();
